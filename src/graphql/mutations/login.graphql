@@ -1,0 +1,12 @@
+mutation Login($password: String!,$brind: String!){
+  login(password: $password, brind: $brind){
+    id
+    email
+    firstName
+    middleName
+    lastName
+    jmbg
+    brind
+    birthDate
+  }
+}

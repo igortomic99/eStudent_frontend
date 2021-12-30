@@ -1,0 +1,17 @@
+query RegisteredExams{
+  registeredExams {
+    id
+    exam {
+      date
+      subject {
+        espp
+        subjectName
+        type
+        professor {
+          firstName
+          lastName
+        }
+      }
+    }
+  }
+}
