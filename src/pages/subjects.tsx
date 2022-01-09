@@ -13,16 +13,18 @@ const Subjects = ({}) => {
         Предмети
       </h1>
       <div className="flex justify-center items-center">
+        <div className="grid content-center grid-cols-1 gap-2 mt-4 p-5">
         {data?.studentsSubjects.map((s) => {
           return (
             <p
               className="flex justify-center items-center
-                             mt-6 bg-gray-800 p-6 w-80 rounded-md text-white shadow-lg"
+                             mt-3 bg-gray-800 p-3 w-80 rounded-md text-white shadow-lg"
             >
               {s.subjectName} {s.type} {s.espp}
             </p>
           );
         })}
+        </div>
       </div>
     </>
   );
