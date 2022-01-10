@@ -20,7 +20,6 @@ const NextExaminationPeriod = ({}) => {
   return (
     <>
       <NavigationBar />
-
       {data ? (
         <>
           <h1 className="text-center text-3xl font-bold text-gray-600 mt-4">
@@ -109,7 +108,7 @@ const NextExaminationPeriod = ({}) => {
                                   <button
                                     className="bg-gray-500 rounded-lg p-2"
                                     onClick={async () => {
-                                      const res = await registerExam({
+                                      await registerExam({
                                         examID: e.id as any,
                                       });
                                     }}
@@ -166,4 +165,4 @@ const NextExaminationPeriod = ({}) => {
   );
 };
 
-export default withUrqlClient(createUrqlClient)(NextExaminationPeriod);
+export default withUrqlClient(createUrqlClient,{ssr:true})(NextExaminationPeriod);

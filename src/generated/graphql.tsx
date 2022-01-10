@@ -222,6 +222,7 @@ export type Query = {
   isLoggedIn: Scalars['Boolean'];
   me: Student;
   meProfessor: Professor;
+  moduleSubjects: Array<Subject>;
   passedExams: Array<ExamRecord>;
   registeredExams: Array<ExamRecord>;
   studentsForModul: Array<Student>;
@@ -233,6 +234,11 @@ export type Query = {
 
 
 export type QueryExamRecordFromIdArgs = {
+  id: Scalars['String'];
+};
+
+
+export type QueryModuleSubjectsArgs = {
   id: Scalars['String'];
 };
 
@@ -277,14 +283,13 @@ export type Student = {
 export type StudentInput = {
   birthDate: Scalars['DateTime'];
   brind: Scalars['String'];
-  classID: Scalars['String'];
+  classNumber: Scalars['Int'];
   email: Scalars['String'];
   firstName: Scalars['String'];
   jmbg: Scalars['String'];
   lastName: Scalars['String'];
   middleName: Scalars['String'];
-  modulID: Scalars['String'];
-  password: Scalars['String'];
+  moduleName: Scalars['String'];
 };
 
 export type Subject = {
@@ -326,6 +331,13 @@ export type LogoutMutationVariables = Exact<{ [key: string]: never; }>;
 
 export type LogoutMutation = { __typename?: 'Mutation', logout: boolean };
 
+export type CreateStudentMutationVariables = Exact<{
+  input: StudentInput;
+}>;
+
+
+export type CreateStudentMutation = { __typename?: 'Mutation', createStudent: { __typename?: 'Student', id: string } };
+
 export type LoginProfessorMutationVariables = Exact<{
   password: Scalars['String'];
   email: Scalars['String'];
@@ -349,35 +361,10 @@ export type RegisterExamMutationVariables = Exact<{
 
 export type RegisterExamMutation = { __typename?: 'Mutation', registerExam: boolean };
 
-export type AverageGradeQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type AverageGradeQuery = { __typename?: 'Query', averageGrade: number };
-
-export type EspbQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type EspbQuery = { __typename?: 'Query', sumESPP: number };
-
-export type ExamsFromExaminationPeriodQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type ExamsFromExaminationPeriodQuery = { __typename?: 'Query', examsFromExaminationPeriod: { __typename?: 'ExaminationPeriod', id: string, name: string, beginningDate: any, endDate: any, exams: Array<{ __typename?: 'Exam', id: string, date: any, examRecord?: { __typename?: 'ExamRecord', id: string, studentID?: string | null | undefined, singed: boolean } | null | undefined, subject: { __typename?: 'Subject', subjectName: string, espp: number, type: SubjectType, professor: { __typename?: 'Professor', firstName: string, lastName: string } } }> } };
-
 export type IsLoggedInQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type IsLoggedInQuery = { __typename?: 'Query', isLoggedIn: boolean };
-
-export type MeQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type MeQuery = { __typename?: 'Query', me: { __typename?: 'Student', id: string, email: string, firstName: string, middleName: string, lastName: string, jmbg: string, brind: string, birthDate: any, role: Role } };
-
-export type PassedExamsQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type PassedExamsQuery = { __typename?: 'Query', passedExams: Array<{ __typename?: 'ExamRecord', points: number, passed: boolean, grade: { __typename?: 'Grade', value: number }, exam: { __typename?: 'Exam', date: any, examinationPeriod?: { __typename?: 'ExaminationPeriod', name: string } | null | undefined, subject: { __typename?: 'Subject', subjectName: string, espp: number, type: SubjectType, professor: { __typename?: 'Professor', firstName: string, lastName: string } } } }> };
 
 export type ExamRecordFromIdQueryVariables = Exact<{
   id: Scalars['String'];
@@ -402,6 +389,31 @@ export type StudentsWhoSingedExamQueryVariables = Exact<{
 
 
 export type StudentsWhoSingedExamQuery = { __typename?: 'Query', studentsWhoSingedExam: Array<{ __typename?: 'ExamRecord', id: string, exam: { __typename?: 'Exam', subject: { __typename?: 'Subject', subjectName: string } }, student?: { __typename?: 'Student', id: string, firstName: string, lastName: string, brind: string } | null | undefined }> };
+
+export type AverageGradeQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type AverageGradeQuery = { __typename?: 'Query', averageGrade: number };
+
+export type EspbQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type EspbQuery = { __typename?: 'Query', sumESPP: number };
+
+export type ExamsFromExaminationPeriodQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type ExamsFromExaminationPeriodQuery = { __typename?: 'Query', examsFromExaminationPeriod: { __typename?: 'ExaminationPeriod', id: string, name: string, beginningDate: any, endDate: any, exams: Array<{ __typename?: 'Exam', id: string, date: any, examRecord?: { __typename?: 'ExamRecord', id: string, studentID?: string | null | undefined, singed: boolean } | null | undefined, subject: { __typename?: 'Subject', subjectName: string, espp: number, type: SubjectType, professor: { __typename?: 'Professor', firstName: string, lastName: string } } }> } };
+
+export type MeQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type MeQuery = { __typename?: 'Query', me: { __typename?: 'Student', id: string, email: string, firstName: string, middleName: string, lastName: string, jmbg: string, brind: string, birthDate: any, role: Role } };
+
+export type PassedExamsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type PassedExamsQuery = { __typename?: 'Query', passedExams: Array<{ __typename?: 'ExamRecord', points: number, passed: boolean, grade: { __typename?: 'Grade', value: number }, exam: { __typename?: 'Exam', date: any, examinationPeriod?: { __typename?: 'ExaminationPeriod', name: string } | null | undefined, subject: { __typename?: 'Subject', subjectName: string, espp: number, type: SubjectType, professor: { __typename?: 'Professor', firstName: string, lastName: string } } } }> };
 
 export type RegisteredExamsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -441,6 +453,17 @@ export const LogoutDocument = gql`
 export function useLogoutMutation() {
   return Urql.useMutation<LogoutMutation, LogoutMutationVariables>(LogoutDocument);
 };
+export const CreateStudentDocument = gql`
+    mutation CreateStudent($input: StudentInput!) {
+  createStudent(input: $input) {
+    id
+  }
+}
+    `;
+
+export function useCreateStudentMutation() {
+  return Urql.useMutation<CreateStudentMutation, CreateStudentMutationVariables>(CreateStudentDocument);
+};
 export const LoginProfessorDocument = gql`
     mutation LoginProfessor($password: String!, $email: String!) {
   loginProfessor(password: $password, email: $email) {
@@ -476,56 +499,6 @@ export const RegisterExamDocument = gql`
 export function useRegisterExamMutation() {
   return Urql.useMutation<RegisterExamMutation, RegisterExamMutationVariables>(RegisterExamDocument);
 };
-export const AverageGradeDocument = gql`
-    query AverageGrade {
-  averageGrade
-}
-    `;
-
-export function useAverageGradeQuery(options: Omit<Urql.UseQueryArgs<AverageGradeQueryVariables>, 'query'> = {}) {
-  return Urql.useQuery<AverageGradeQuery>({ query: AverageGradeDocument, ...options });
-};
-export const EspbDocument = gql`
-    query ESPB {
-  sumESPP
-}
-    `;
-
-export function useEspbQuery(options: Omit<Urql.UseQueryArgs<EspbQueryVariables>, 'query'> = {}) {
-  return Urql.useQuery<EspbQuery>({ query: EspbDocument, ...options });
-};
-export const ExamsFromExaminationPeriodDocument = gql`
-    query ExamsFromExaminationPeriod {
-  examsFromExaminationPeriod {
-    id
-    name
-    beginningDate
-    endDate
-    exams {
-      id
-      date
-      examRecord {
-        id
-        studentID
-        singed
-      }
-      subject {
-        subjectName
-        espp
-        type
-        professor {
-          firstName
-          lastName
-        }
-      }
-    }
-  }
-}
-    `;
-
-export function useExamsFromExaminationPeriodQuery(options: Omit<Urql.UseQueryArgs<ExamsFromExaminationPeriodQueryVariables>, 'query'> = {}) {
-  return Urql.useQuery<ExamsFromExaminationPeriodQuery>({ query: ExamsFromExaminationPeriodDocument, ...options });
-};
 export const IsLoggedInDocument = gql`
     query IsLoggedIn {
   isLoggedIn
@@ -534,55 +507,6 @@ export const IsLoggedInDocument = gql`
 
 export function useIsLoggedInQuery(options: Omit<Urql.UseQueryArgs<IsLoggedInQueryVariables>, 'query'> = {}) {
   return Urql.useQuery<IsLoggedInQuery>({ query: IsLoggedInDocument, ...options });
-};
-export const MeDocument = gql`
-    query Me {
-  me {
-    id
-    email
-    firstName
-    middleName
-    lastName
-    jmbg
-    brind
-    birthDate
-    role
-  }
-}
-    `;
-
-export function useMeQuery(options: Omit<Urql.UseQueryArgs<MeQueryVariables>, 'query'> = {}) {
-  return Urql.useQuery<MeQuery>({ query: MeDocument, ...options });
-};
-export const PassedExamsDocument = gql`
-    query PassedExams {
-  passedExams {
-    grade {
-      value
-    }
-    points
-    passed
-    exam {
-      date
-      examinationPeriod {
-        name
-      }
-      subject {
-        subjectName
-        espp
-        type
-        professor {
-          firstName
-          lastName
-        }
-      }
-    }
-  }
-}
-    `;
-
-export function usePassedExamsQuery(options: Omit<Urql.UseQueryArgs<PassedExamsQueryVariables>, 'query'> = {}) {
-  return Urql.useQuery<PassedExamsQuery>({ query: PassedExamsDocument, ...options });
 };
 export const ExamRecordFromIdDocument = gql`
     query ExamRecordFromId($id: String!) {
@@ -667,6 +591,105 @@ export const StudentsWhoSingedExamDocument = gql`
 
 export function useStudentsWhoSingedExamQuery(options: Omit<Urql.UseQueryArgs<StudentsWhoSingedExamQueryVariables>, 'query'> = {}) {
   return Urql.useQuery<StudentsWhoSingedExamQuery>({ query: StudentsWhoSingedExamDocument, ...options });
+};
+export const AverageGradeDocument = gql`
+    query AverageGrade {
+  averageGrade
+}
+    `;
+
+export function useAverageGradeQuery(options: Omit<Urql.UseQueryArgs<AverageGradeQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<AverageGradeQuery>({ query: AverageGradeDocument, ...options });
+};
+export const EspbDocument = gql`
+    query ESPB {
+  sumESPP
+}
+    `;
+
+export function useEspbQuery(options: Omit<Urql.UseQueryArgs<EspbQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<EspbQuery>({ query: EspbDocument, ...options });
+};
+export const ExamsFromExaminationPeriodDocument = gql`
+    query ExamsFromExaminationPeriod {
+  examsFromExaminationPeriod {
+    id
+    name
+    beginningDate
+    endDate
+    exams {
+      id
+      date
+      examRecord {
+        id
+        studentID
+        singed
+      }
+      subject {
+        subjectName
+        espp
+        type
+        professor {
+          firstName
+          lastName
+        }
+      }
+    }
+  }
+}
+    `;
+
+export function useExamsFromExaminationPeriodQuery(options: Omit<Urql.UseQueryArgs<ExamsFromExaminationPeriodQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<ExamsFromExaminationPeriodQuery>({ query: ExamsFromExaminationPeriodDocument, ...options });
+};
+export const MeDocument = gql`
+    query Me {
+  me {
+    id
+    email
+    firstName
+    middleName
+    lastName
+    jmbg
+    brind
+    birthDate
+    role
+  }
+}
+    `;
+
+export function useMeQuery(options: Omit<Urql.UseQueryArgs<MeQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<MeQuery>({ query: MeDocument, ...options });
+};
+export const PassedExamsDocument = gql`
+    query PassedExams {
+  passedExams {
+    grade {
+      value
+    }
+    points
+    passed
+    exam {
+      date
+      examinationPeriod {
+        name
+      }
+      subject {
+        subjectName
+        espp
+        type
+        professor {
+          firstName
+          lastName
+        }
+      }
+    }
+  }
+}
+    `;
+
+export function usePassedExamsQuery(options: Omit<Urql.UseQueryArgs<PassedExamsQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<PassedExamsQuery>({ query: PassedExamsDocument, ...options });
 };
 export const RegisteredExamsDocument = gql`
     query RegisteredExams {

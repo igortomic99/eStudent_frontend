@@ -16,4 +16,4 @@ const passedExams = () => {
   );
 };
 
-export default withUrqlClient(createUrqlClient)(passedExams);
+export default withUrqlClient(createUrqlClient,{ssr:true})(passedExams);

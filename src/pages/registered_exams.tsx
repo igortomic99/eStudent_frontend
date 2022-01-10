@@ -146,4 +146,4 @@ const RegisteredExams = ({}) => {
   );
 };
 
-export default withUrqlClient(createUrqlClient)(RegisteredExams);
+export default withUrqlClient(createUrqlClient,{ssr:true})(RegisteredExams);
