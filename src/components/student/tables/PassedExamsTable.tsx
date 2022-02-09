@@ -3,7 +3,7 @@ import {
   useAverageGradeQuery,
   useEspbQuery,
   usePassedExamsQuery,
-} from "../generated/graphql";
+} from "../../../generated/graphql";
 
 export const PassedExamsTable = () => {
   const [{ data, fetching, error }] = usePassedExamsQuery();

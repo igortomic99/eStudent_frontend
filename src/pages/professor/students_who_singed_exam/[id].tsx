@@ -1,7 +1,7 @@
 import { withUrqlClient } from "next-urql";
 import { useRouter } from "next/router";
 import React from "react";
-import { ProfessorNavigationBar } from "../../../components/professor_panel/ProfessorNavigationBar";
+import { ProfessorNavigationBar } from "../../../components/professor/ProfessorNavigationBar";
 import { useStudentsWhoSingedExamQuery } from "../../../generated/graphql";
 import { createUrqlClient } from "../../../utils/createUrqlClient";
 import NextLink from 'next/link'

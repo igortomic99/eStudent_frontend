@@ -1,7 +1,7 @@
 import { withUrqlClient } from "next-urql";
 import React from "react";
-import { NavigationBar } from "../components/NavigationBar";
-import { createUrqlClient } from "../utils/createUrqlClient";
+import { NavigationBar } from "../../components/student/NavigationBar";
+import { createUrqlClient } from "../../utils/createUrqlClient";
 
 const Settings = () => {
   return (

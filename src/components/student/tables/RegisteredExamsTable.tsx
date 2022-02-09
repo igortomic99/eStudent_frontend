@@ -1,18 +1,12 @@
-import { withUrqlClient } from "next-urql";
 import { useRouter } from "next/router";
 import React from "react";
-import { NavigationBar } from "../../components/NavigationBar";
-import { useExamsFromCurrentExamPeriodQuery } from "../../generated/graphql";
-import { createUrqlClient } from "../../utils/createUrqlClient";
-import NextLink from 'next/link'
-import { ProfessorNavigationBar } from "../../components/professor_panel/ProfessorNavigationBar";
+import { useRegisteredExamsQuery } from "../../../generated/graphql";
 
-const RegisteredExams = ({}) => {
-  const [{ data, error, fetching }] = useExamsFromCurrentExamPeriodQuery();
+export const RegisteredExamsTable = () => {
   const router = useRouter();
+  const [{ data, error, fetching }] = useRegisteredExamsQuery();
   return (
     <>
-      <ProfessorNavigationBar />
       {data ? (
         <div className="flex flex-col mt-10 px-20">
           <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -49,7 +43,7 @@ const RegisteredExams = ({}) => {
                         scope="col"
                         className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                       >
-                        student
+                        Испитни наставник
                       </th>
                       <th
                         scope="col"
@@ -58,47 +52,37 @@ const RegisteredExams = ({}) => {
                     </tr>
                   </thead>
                   <tbody className="bg-white divide-y divide-gray-200">
-                    {data?.examsFromCurrentExamPeriod.length !== 0 ? (
-                      data?.examsFromCurrentExamPeriod.map((e) => {
+                    {data?.registeredExams.length !== 0 ? (
+                      data?.registeredExams.map((e) => {
                         return (
                           <tr>
                             <td className="px-6 py-4 whitespace-nowrap">
                               <div className="flex items-center">
-                                {e.subject.subjectName}
+                                {e.exam.subject.subjectName}
                               </div>
                             </td>
                             <td className="px-8 py-4 whitespace-nowrap">
                               <div className="text-sm text-gray-900">
-                                {e.subject.type}
+                                {e.exam.subject.type}
                               </div>
                             </td>
                             <td className="px-8 py-4 whitespace-nowrap text-sm text-gray-500">
-                              {e.subject.espp}
+                              {e.exam.subject.espp}
                             </td>
                             <td className="px-10 py-4 whitespace-nowrap text-sm text-gray-500">
-                              {e.date.split("T")[0]}
+                              {e.exam.date.split("T")[0]}
                             </td>
-                            {e.examRecord?.student ? (
-                              <td className="px-8 py-4 whitespace-nowrap text-sm text-gray-500">
-                                {e.examRecord?.student?.firstName}{" "}
-                                {e.examRecord?.student?.lastName}
-                              </td>
-                            ) : (
-                              <td className="px-8 py-4 whitespace-nowrap text-sm text-gray-500">
-                                Niko nije prijavio ispit
-                              </td>
-                            )}
+                            <td className="px-8 py-4 whitespace-nowrap text-sm text-gray-500">
+                              {e.exam.subject.professor.firstName}{" "}
+                              {e.exam.subject.professor.lastName}
+                            </td>
                             <td className="px-8 py-4 whitespace-nowrap text-sm text-white">
-                             <NextLink href="/professor_panel/students_who_singed_exam/[id]" as={`/professor_panel/students_who_singed_exam/${e.subject.id}`}>
                               <button
                                 className="bg-gray-500 rounded-lg p-2"
-                                onClick={async () => {
-                                  
-                                }}
+                                onClick={async () => {}}
                               >
-                                Prijavi rezultate ispita
+                                Одјави испит
                               </button>
-                              </NextLink>
                             </td>
                           </tr>
                         );
@@ -149,5 +133,3 @@ const RegisteredExams = ({}) => {
     </>
   );
 };
-
-export default withUrqlClient(createUrqlClient)(RegisteredExams);

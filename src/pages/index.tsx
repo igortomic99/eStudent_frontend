@@ -1,6 +1,6 @@
 import { withUrqlClient } from "next-urql";
 import { Card } from "../components/Card";
-import { NavigationBar } from "../components/NavigationBar";
+import { NavigationBar } from "../components/student/NavigationBar";
 import { createUrqlClient } from "../utils/createUrqlClient";
 import { useAuth } from "../utils/useAuth";
 

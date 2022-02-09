@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
 import { InputField } from '../../components/InputField';
-import { ProfessorNavigationBar } from '../../components/professor_panel/ProfessorNavigationBar';
+import { ProfessorNavigationBar } from '../../components/professor/ProfessorNavigationBar';
 import { useLoginProfessorMutation, useMeProfessorQuery } from '../../generated/graphql';
 import grbUniverziteta from "../../public/grbuniverziteta.png";
 import { createUrqlClient } from '../../utils/createUrqlClient';

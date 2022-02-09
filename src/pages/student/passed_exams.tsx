@@ -1,7 +1,7 @@
 import { withUrqlClient } from "next-urql";
 import React from "react";
-import { NavigationBar } from "../components/NavigationBar";
-import { PassedExamsTable } from "../components/PassedExamsTable";
+import { NavigationBar } from "../components/student/NavigationBar";
+import { PassedExamsTable } from "../components/student/tables/PassedExamsTable";
 import { createUrqlClient } from "../utils/createUrqlClient";
 import { useAuth } from "../utils/useAuth";
 

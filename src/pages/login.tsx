@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { InputField } from "../components/InputField";
-import { NavigationBar } from "../components/NavigationBar";
+import { NavigationBar } from "../components/student/NavigationBar";
 import {
   useLoginMutation,
   useMeProfessorQuery,
@@ -14,6 +14,7 @@ import grbUniverziteta from "../public/grbuniverziteta.png";
 import { createUrqlClient } from "../utils/createUrqlClient";
 
 const Login = () => {
+  ///Defining variables
   const router = useRouter();
   const [, login] = useLoginMutation();
   const [{ data, error, fetching }] = useMeQuery();
@@ -27,10 +28,10 @@ const Login = () => {
     <>
       <NavigationBar />
       {alert}
-      <div className="min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 mt-24">
-        <div className="max-w-md w-full space-y-8">
+      <div className="min-h-full flex items-center  justify-center py-12 px-4 sm:px-6 lg:px-8 mt-24">
+        <div className="max-w-md w-full space-y-8 ">
           <div>
-            <div className="text-center -mt-16">
+            <div className="text-center -mt-16 " >
               <Image
                 src={grbUniverziteta}
                 alt="Workflow"
@@ -83,7 +84,7 @@ const Login = () => {
             }}
           >
             {({ isSubmitting }) => (
-              <Form className="mt-8 space-y-6" action="#" method="POST">
+              <Form className="mt-8 space-y-6 " action="#" method="POST">
                 <input type="hidden" name="remember" value="true" />
                 <div className="rounded-md shadow-sm -space-y-px">
                   <div>

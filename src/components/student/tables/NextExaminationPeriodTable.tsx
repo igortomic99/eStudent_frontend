@@ -1,25 +1,19 @@
-import { withUrqlClient } from "next-urql";
 import { useRouter } from "next/router";
 import React from "react";
-import { NavigationBar } from "../components/NavigationBar";
 import {
   useExamsFromExaminationPeriodQuery,
   useMeQuery,
   useRegisterExamMutation,
-} from "../generated/graphql";
-import { createUrqlClient } from "../utils/createUrqlClient";
-import { useAuth } from "../utils/useAuth";
+} from "../../../generated/graphql";
 
-const NextExaminationPeriod = ({}) => {
+export const NextExaminationPeriodTable = () => {
   const router = useRouter();
   const [{ data, error, fetching }] = useExamsFromExaminationPeriodQuery();
   const [, registerExam] = useRegisterExamMutation();
   const [{ data: student }] = useMeQuery();
   let buttonDisplay = true;
-  useAuth();
   return (
     <>
-      <NavigationBar />
       {data ? (
         <>
           <h1 className="text-center text-3xl font-bold text-gray-600 mt-4">
@@ -164,5 +158,3 @@ const NextExaminationPeriod = ({}) => {
     </>
   );
 };
-
-export default withUrqlClient(createUrqlClient,{ssr:true})(NextExaminationPeriod);

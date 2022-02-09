@@ -1,9 +1,8 @@
 import Image from "next/image";
 import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
-import { useLogoutMutation, useMeQuery } from "../generated/graphql";
-import grbUniverziteta from "../public/grbuniverziteta.png";
-import { useAuth } from "../utils/useAuth";
+import React, { useState } from "react";
+import { useLogoutMutation, useMeQuery } from "../../generated/graphql";
+import grbUniverziteta from "../../public/grbuniverziteta.png";
 
 export const NavigationBar = () => {
   const [down, setDown] = useState(false);
@@ -60,7 +59,7 @@ export const NavigationBar = () => {
                 role="menuitem"
                 id="user-menu-item-1"
                 onClick={() => {
-                  router.push("/settings");
+                  router.push("student/settings");
                 }}
               >
                 Подешавања
@@ -160,14 +159,14 @@ export const NavigationBar = () => {
                   Испити
                 </a>
                 {ispitiMenu ? (
-                  <div className="flex absolute rounded shadow w-44 dark:bg-gray-700 mt-11">
+                  <div className="flex absolute rounded shadow w-44 bg-white mt-11">
                     <ul className="py-1" aria-labelledby="dropdownButton">
                       <li>
                         <a
                           onClick={() => {
-                            router.push("/registered_exams");
+                            router.push("student/registered_exams");
                           }}
-                          className="block px-4 py-2 text-sm text-white cursor-pointer"
+                          className="block px-4 py-2 text-sm text-gray-700 cursor-pointer"
                           role="menuitem"
                           id="user-menu-item-1"
                         >
@@ -177,9 +176,9 @@ export const NavigationBar = () => {
                       <li>
                         <a
                           onClick={() => {
-                            router.push("/passed_exams");
+                            router.push("student/passed_exams");
                           }}
-                          className="block px-4 py-2 text-sm text-white cursor-pointer"
+                          className="block px-4 py-2 text-sm text-gray-700 cursor-pointer"
                           role="menuitem"
                           id="user-menu-item-1"
                         >
@@ -189,9 +188,9 @@ export const NavigationBar = () => {
                       <li>
                         <a
                           onClick={() => {
-                            router.push("/next_examination_period");
+                            router.push("student/next_examination_period");
                           }}
-                          className="block px-4 py-2 text-sm text-white cursor-pointer"
+                          className="block px-4 py-2 text-sm text-gray-700 cursor-pointer"
                           role="menuitem"
                           id="user-menu-item-1"
                         >
@@ -203,7 +202,7 @@ export const NavigationBar = () => {
                 ) : null}
                 <a
                   onClick={()=>{
-                    router.push('/subjects')
+                    router.push('student/subjects')
                   }}
                   className="text-gray-300 cursor-pointer hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
                 >

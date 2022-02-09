@@ -1,6 +1,6 @@
 import { withUrqlClient } from "next-urql";
 import React from "react";
-import { NavigationBar } from "../components/NavigationBar";
+import { NavigationBar } from "../components/student/NavigationBar";
 import { useStudentsSubjectsQuery } from "../generated/graphql";
 import { createUrqlClient } from "../utils/createUrqlClient";
 
