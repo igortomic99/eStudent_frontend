@@ -4,38 +4,30 @@ import router from "next/router";
 import React from "react";
 import { AdminNavigationBar } from "../../components/admin/NavigationBar";
 import { InputField } from "../../components/InputField";
-import { useCreateStudentMutation } from "../../generated/graphql";
+import { useCreatSubjectMutation } from "../../generated/graphql";
 import { createUrqlClient } from "../../utils/createUrqlClient";
 
-const CreateStudent = ({}) => {
-  const [, createStudent] = useCreateStudentMutation();
+const CreateSubject = ({}) => {
+  const [, createSubject] = useCreatSubjectMutation()
   return (
     <>
       <AdminNavigationBar />
       <Formik
         initialValues={{
-          email: "",
-          firstName: "",
-          lastName: "",
-          brind: "",
-          middleName: "",
-          jmbg: "",
-          moduleName: "",
-          classNumber: "",
-          birthDate: "",
+            subjectName: "",
+            espp: 0,
+            professorID: "",
+            type:"",
+            modulID:""
         }}
         onSubmit={async (values) => {
-          const response = await createStudent({
+          const response = await createSubject({
             input: {
-              birthDate: values.birthDate,
-              brind: values.brind,
-              classNumber: parseInt(values.classNumber),
-              email: values.email,
-              firstName: values.firstName,
-              lastName: values.lastName,
-              jmbg: values.jmbg,
-              middleName: values.middleName,
-              moduleCode: values.moduleName,
+                subjectName: "",
+                espp: 0,
+                professorID: "",
+                type: " " as any,
+                modulID:""
             },
           });
           if (response.error?.message.includes("ER201")) {
@@ -117,54 +109,7 @@ const CreateStudent = ({}) => {
                           placeholder="Унеси email адресу"
                         />
                       </div>
-
-                      <div className="w-full md:w-full px-3 mb-6">
-                        <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
-                          датум рођења
-                        </label>
-                        <InputField
-                          className="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-400 shadow-inner rounded-md py-3 px-4 leading-tight focus:outline-none  focus:border-gray-500"
-                          id="birthDate"
-                          name="birthDate"
-                          type="birthDate"
-                          placeholder="Унеси email адресу"
-                        />
-                      </div>
                       <div className="w-full md:w-full px-3 mb-6 ">
-                        <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
-                          модул
-                        </label>
-                        <InputField
-                          className="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-400 shadow-inner rounded-md py-3 px-4 leading-tight focus:outline-none  focus:border-gray-500"
-                          id="moduleName"
-                          name="moduleName"
-                          type="moduleName"
-                          placeholder="Унеси нову шифру"
-                        />
-                      </div>
-                      <div className="w-full md:w-full px-3 mb-6 ">
-                        <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
-                          класа
-                        </label>
-                        <InputField
-                          className="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-400 shadow-inner rounded-md py-3 px-4 leading-tight focus:outline-none  focus:border-gray-500"
-                          id="classNumber"
-                          name="classNumber"
-                          type="classNumber"
-                          placeholder="Унеси нову шифру"
-                        />
-                      </div>
-                      <div className="w-full md:w-full px-3 mb-6 ">
-                        <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
-                          јмбг
-                        </label>
-                        <InputField
-                          className="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-400 shadow-inner rounded-md py-3 px-4 leading-tight focus:outline-none  focus:border-gray-500"
-                          id="jmbg"
-                          name="jmbg"
-                          type="jmbg"
-                          placeholder="Унеси нови број мобилног телефона"
-                        />
                         <button
                           type="submit"
                           className="appearance-none mt-4 w-48 bg-gray-200 text-gray-900 px-2 py-1 shadow-sm border border-gray-400 rounded-md "
@@ -184,4 +129,4 @@ const CreateStudent = ({}) => {
   );
 };
 
-export default withUrqlClient(createUrqlClient)(CreateStudent);
+export default withUrqlClient(createUrqlClient)(CreateSubject);

@@ -1,16 +1,15 @@
 import { withUrqlClient } from "next-urql";
 import { useRouter } from "next/router";
 import React from "react";
-import { NavigationBar } from "../components/student/NavigationBar";
-import { RegisteredExamsTable } from "../components/student/tables/RegisteredExamsTable";
-import { useRegisteredExamsQuery } from "../generated/graphql";
-import { createUrqlClient } from "../utils/createUrqlClient";
-import { useAuth } from "../utils/useAuth";
+import { NavigationBar } from "../../components/student/NavigationBar";
+import { RegisteredExamsTable } from "../../components/student/tables/RegisteredExamsTable";
+import { createUrqlClient } from "../../utils/createUrqlClient";
+import { useAuth } from "../../utils/useAuth";
+
 
 const RegisteredExams = ({}) => {
-  const router = useRouter();
-  const [{ data, error, fetching }] = useRegisteredExamsQuery();
   useAuth();
+  const router = useRouter();
   return (
     <>
       <NavigationBar />

@@ -1,12 +1,5 @@
-mutation Login($password: String!,$brind: String!){
-  login(password: $password, brind: $brind){
+mutation Login($brind: String!,$password: String!){
+  login(brind: $brind, password: $password) {
     id
-    email
-    firstName
-    middleName
-    lastName
-    jmbg
-    brind
-    birthDate
   }
 }

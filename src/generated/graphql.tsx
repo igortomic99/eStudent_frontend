@@ -13,7 +13,7 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
-  /** The javascript `Date` as string. Type represents date and time as the ISO Date string. */
+  /** A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format. */
   DateTime: any;
 };
 
@@ -62,10 +62,12 @@ export type ExamRecord = {
 
 export type ExaminationPeriod = {
   __typename?: 'ExaminationPeriod';
+  active?: Maybe<Scalars['Boolean']>;
   beginningDate: Scalars['DateTime'];
   endDate: Scalars['DateTime'];
   exams: Array<Exam>;
   id: Scalars['String'];
+  modul?: Maybe<Modul>;
   modulID?: Maybe<Scalars['String']>;
   name: Scalars['String'];
 };
@@ -93,6 +95,7 @@ export type Modul = {
   id: Scalars['String'];
   moduleCode: Scalars['String'];
   moduleName: Scalars['String'];
+  students?: Maybe<Array<Student>>;
 };
 
 export type ModulInput = {
@@ -104,7 +107,7 @@ export type Mutation = {
   __typename?: 'Mutation';
   addExam: Exam;
   createClass: Class;
-  createEXP: ExaminationPeriod;
+  createExaminationPeriod: ExaminationPeriod;
   createGrade: Grade;
   createModul: Modul;
   createProfessor: Professor;
@@ -116,6 +119,8 @@ export type Mutation = {
   logout: Scalars['Boolean'];
   registerExam: Scalars['Boolean'];
   registerPassedExam: Scalars['Boolean'];
+  updateEmail: Scalars['Boolean'];
+  updatePassword: Scalars['Boolean'];
 };
 
 
@@ -129,7 +134,7 @@ export type MutationCreateClassArgs = {
 };
 
 
-export type MutationCreateExpArgs = {
+export type MutationCreateExaminationPeriodArgs = {
   input: ExaminationPeriodInput;
 };
 
@@ -186,6 +191,16 @@ export type MutationRegisterPassedExamArgs = {
   points: Scalars['Float'];
 };
 
+
+export type MutationUpdateEmailArgs = {
+  email: Scalars['String'];
+};
+
+
+export type MutationUpdatePasswordArgs = {
+  pass: Scalars['String'];
+};
+
 export type Professor = {
   __typename?: 'Professor';
   email: Scalars['String'];
@@ -195,6 +210,7 @@ export type Professor = {
   lastName: Scalars['String'];
   password: Scalars['String'];
   role: Role;
+  subjects?: Maybe<Array<Subject>>;
 };
 
 export type ProfessorInput = {
@@ -202,7 +218,6 @@ export type ProfessorInput = {
   firstName: Scalars['String'];
   jmbg: Scalars['String'];
   lastName: Scalars['String'];
-  password: Scalars['String'];
 };
 
 export type Query = {
@@ -211,18 +226,18 @@ export type Query = {
   averageGrade: Scalars['Float'];
   examsFromCurrentExamPeriod: Array<Exam>;
   examsFromExaminationPeriod: ExaminationPeriod;
-  getAll: Array<Student>;
-  getAllClasses: Array<Class>;
   getAllEXP: Array<ExaminationPeriod>;
-  getAllExams: Array<Exam>;
-  getAllGrades: Array<Grade>;
+  getAllExams: Array<ExamRecord>;
   getAllModuls: Array<Modul>;
   getAllProfessors: Array<Professor>;
-  getAllSubjects: Array<Subject>;
-  isLoggedIn: Scalars['Boolean'];
+  getClasses: Array<Class>;
+  getGrades: Array<Grade>;
+  getStudents: Array<Student>;
+  getSubjects: Array<Subject>;
+  isActive: Scalars['Boolean'];
   me: Student;
   meProfessor: Professor;
-  moduleSubjects: Array<Subject>;
+  modulSubjects: Array<Subject>;
   passedExams: Array<ExamRecord>;
   registeredExams: Array<ExamRecord>;
   studentsForModul: Array<Student>;
@@ -238,7 +253,12 @@ export type QueryExamRecordFromIdArgs = {
 };
 
 
-export type QueryModuleSubjectsArgs = {
+export type QueryIsActiveArgs = {
+  id: Scalars['String'];
+};
+
+
+export type QueryModulSubjectsArgs = {
   id: Scalars['String'];
 };
 
@@ -276,7 +296,9 @@ export type Student = {
   jmbg: Scalars['String'];
   lastName: Scalars['String'];
   middleName: Scalars['String'];
+  modul?: Maybe<Modul>;
   modulID: Scalars['String'];
+  password: Scalars['String'];
   role: Role;
 };
 
@@ -289,7 +311,7 @@ export type StudentInput = {
   jmbg: Scalars['String'];
   lastName: Scalars['String'];
   middleName: Scalars['String'];
-  moduleName: Scalars['String'];
+  moduleCode: Scalars['String'];
 };
 
 export type Subject = {
@@ -318,18 +340,19 @@ export enum SubjectType {
   Required = 'REQUIRED'
 }
 
-export type LoginMutationVariables = Exact<{
-  password: Scalars['String'];
-  brind: Scalars['String'];
+export type CreateClassMutationVariables = Exact<{
+  input: ClassInput;
 }>;
 
 
-export type LoginMutation = { __typename?: 'Mutation', login: { __typename?: 'Student', id: string, email: string, firstName: string, middleName: string, lastName: string, jmbg: string, brind: string, birthDate: any } };
+export type CreateClassMutation = { __typename?: 'Mutation', createClass: { __typename?: 'Class', id: string, classLabel: number } };
 
-export type LogoutMutationVariables = Exact<{ [key: string]: never; }>;
+export type CreateModulMutationVariables = Exact<{
+  input: ModulInput;
+}>;
 
 
-export type LogoutMutation = { __typename?: 'Mutation', logout: boolean };
+export type CreateModulMutation = { __typename?: 'Mutation', createModul: { __typename?: 'Modul', id: string, moduleName: string, moduleCode: string } };
 
 export type CreateStudentMutationVariables = Exact<{
   input: StudentInput;
@@ -337,6 +360,26 @@ export type CreateStudentMutationVariables = Exact<{
 
 
 export type CreateStudentMutation = { __typename?: 'Mutation', createStudent: { __typename?: 'Student', id: string } };
+
+export type CreatSubjectMutationVariables = Exact<{
+  input: SubjectInput;
+}>;
+
+
+export type CreatSubjectMutation = { __typename?: 'Mutation', createSubject: { __typename?: 'Subject', id: string, subjectName: string, espp: number } };
+
+export type LoginMutationVariables = Exact<{
+  brind: Scalars['String'];
+  password: Scalars['String'];
+}>;
+
+
+export type LoginMutation = { __typename?: 'Mutation', login: { __typename?: 'Student', id: string } };
+
+export type LogoutMutationVariables = Exact<{ [key: string]: never; }>;
+
+
+export type LogoutMutation = { __typename?: 'Mutation', logout: boolean };
 
 export type LoginProfessorMutationVariables = Exact<{
   password: Scalars['String'];
@@ -346,13 +389,12 @@ export type LoginProfessorMutationVariables = Exact<{
 
 export type LoginProfessorMutation = { __typename?: 'Mutation', loginProfessor: { __typename?: 'Professor', id: string, firstName: string, lastName: string, email: string, password: string, jmbg: string, role: Role } };
 
-export type RegisterPassedExamMutationVariables = Exact<{
-  id: Scalars['String'];
-  points: Scalars['Float'];
+export type DeregisterMutationVariables = Exact<{
+  examID: Scalars['String'];
 }>;
 
 
-export type RegisterPassedExamMutation = { __typename?: 'Mutation', registerPassedExam: boolean };
+export type DeregisterMutation = { __typename?: 'Mutation', deregisterExam: boolean };
 
 export type RegisterExamMutationVariables = Exact<{
   examID: Scalars['String'];
@@ -361,10 +403,27 @@ export type RegisterExamMutationVariables = Exact<{
 
 export type RegisterExamMutation = { __typename?: 'Mutation', registerExam: boolean };
 
-export type IsLoggedInQueryVariables = Exact<{ [key: string]: never; }>;
+export type RegisterPassedExamMutationVariables = Exact<{
+  id: Scalars['String'];
+  points: Scalars['Float'];
+}>;
 
 
-export type IsLoggedInQuery = { __typename?: 'Query', isLoggedIn: boolean };
+export type RegisterPassedExamMutation = { __typename?: 'Mutation', registerPassedExam: boolean };
+
+export type UpdateEmailMutationVariables = Exact<{
+  email: Scalars['String'];
+}>;
+
+
+export type UpdateEmailMutation = { __typename?: 'Mutation', updateEmail: boolean };
+
+export type UpdatePasswordMutationVariables = Exact<{
+  pass: Scalars['String'];
+}>;
+
+
+export type UpdatePasswordMutation = { __typename?: 'Mutation', updatePassword: boolean };
 
 export type ExamRecordFromIdQueryVariables = Exact<{
   id: Scalars['String'];
@@ -418,7 +477,7 @@ export type PassedExamsQuery = { __typename?: 'Query', passedExams: Array<{ __ty
 export type RegisteredExamsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type RegisteredExamsQuery = { __typename?: 'Query', registeredExams: Array<{ __typename?: 'ExamRecord', id: string, exam: { __typename?: 'Exam', date: any, subject: { __typename?: 'Subject', espp: number, subjectName: string, type: SubjectType, professor: { __typename?: 'Professor', firstName: string, lastName: string } } } }> };
+export type RegisteredExamsQuery = { __typename?: 'Query', registeredExams: Array<{ __typename?: 'ExamRecord', id: string, exam: { __typename?: 'Exam', id: string, date: any, subject: { __typename?: 'Subject', espp: number, subjectName: string, type: SubjectType, professor: { __typename?: 'Professor', firstName: string, lastName: string } } } }> };
 
 export type StudentsSubjectsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -426,17 +485,59 @@ export type StudentsSubjectsQueryVariables = Exact<{ [key: string]: never; }>;
 export type StudentsSubjectsQuery = { __typename?: 'Query', studentsSubjects: Array<{ __typename?: 'Subject', id: string, subjectName: string, espp: number, type: SubjectType }> };
 
 
-export const LoginDocument = gql`
-    mutation Login($password: String!, $brind: String!) {
-  login(password: $password, brind: $brind) {
+export const CreateClassDocument = gql`
+    mutation CreateClass($input: ClassInput!) {
+  createClass(input: $input) {
     id
-    email
-    firstName
-    middleName
-    lastName
-    jmbg
-    brind
-    birthDate
+    classLabel
+  }
+}
+    `;
+
+export function useCreateClassMutation() {
+  return Urql.useMutation<CreateClassMutation, CreateClassMutationVariables>(CreateClassDocument);
+};
+export const CreateModulDocument = gql`
+    mutation CreateModul($input: ModulInput!) {
+  createModul(input: $input) {
+    id
+    moduleName
+    moduleCode
+  }
+}
+    `;
+
+export function useCreateModulMutation() {
+  return Urql.useMutation<CreateModulMutation, CreateModulMutationVariables>(CreateModulDocument);
+};
+export const CreateStudentDocument = gql`
+    mutation CreateStudent($input: StudentInput!) {
+  createStudent(input: $input) {
+    id
+  }
+}
+    `;
+
+export function useCreateStudentMutation() {
+  return Urql.useMutation<CreateStudentMutation, CreateStudentMutationVariables>(CreateStudentDocument);
+};
+export const CreatSubjectDocument = gql`
+    mutation CreatSubject($input: SubjectInput!) {
+  createSubject(input: $input) {
+    id
+    subjectName
+    espp
+  }
+}
+    `;
+
+export function useCreatSubjectMutation() {
+  return Urql.useMutation<CreatSubjectMutation, CreatSubjectMutationVariables>(CreatSubjectDocument);
+};
+export const LoginDocument = gql`
+    mutation Login($brind: String!, $password: String!) {
+  login(brind: $brind, password: $password) {
+    id
   }
 }
     `;
@@ -452,17 +553,6 @@ export const LogoutDocument = gql`
 
 export function useLogoutMutation() {
   return Urql.useMutation<LogoutMutation, LogoutMutationVariables>(LogoutDocument);
-};
-export const CreateStudentDocument = gql`
-    mutation CreateStudent($input: StudentInput!) {
-  createStudent(input: $input) {
-    id
-  }
-}
-    `;
-
-export function useCreateStudentMutation() {
-  return Urql.useMutation<CreateStudentMutation, CreateStudentMutationVariables>(CreateStudentDocument);
 };
 export const LoginProfessorDocument = gql`
     mutation LoginProfessor($password: String!, $email: String!) {
@@ -481,14 +571,14 @@ export const LoginProfessorDocument = gql`
 export function useLoginProfessorMutation() {
   return Urql.useMutation<LoginProfessorMutation, LoginProfessorMutationVariables>(LoginProfessorDocument);
 };
-export const RegisterPassedExamDocument = gql`
-    mutation RegisterPassedExam($id: String!, $points: Float!) {
-  registerPassedExam(points: $points, id: $id)
+export const DeregisterDocument = gql`
+    mutation Deregister($examID: String!) {
+  deregisterExam(examID: $examID)
 }
     `;
 
-export function useRegisterPassedExamMutation() {
-  return Urql.useMutation<RegisterPassedExamMutation, RegisterPassedExamMutationVariables>(RegisterPassedExamDocument);
+export function useDeregisterMutation() {
+  return Urql.useMutation<DeregisterMutation, DeregisterMutationVariables>(DeregisterDocument);
 };
 export const RegisterExamDocument = gql`
     mutation RegisterExam($examID: String!) {
@@ -499,14 +589,32 @@ export const RegisterExamDocument = gql`
 export function useRegisterExamMutation() {
   return Urql.useMutation<RegisterExamMutation, RegisterExamMutationVariables>(RegisterExamDocument);
 };
-export const IsLoggedInDocument = gql`
-    query IsLoggedIn {
-  isLoggedIn
+export const RegisterPassedExamDocument = gql`
+    mutation RegisterPassedExam($id: String!, $points: Float!) {
+  registerPassedExam(points: $points, id: $id)
 }
     `;
 
-export function useIsLoggedInQuery(options: Omit<Urql.UseQueryArgs<IsLoggedInQueryVariables>, 'query'> = {}) {
-  return Urql.useQuery<IsLoggedInQuery>({ query: IsLoggedInDocument, ...options });
+export function useRegisterPassedExamMutation() {
+  return Urql.useMutation<RegisterPassedExamMutation, RegisterPassedExamMutationVariables>(RegisterPassedExamDocument);
+};
+export const UpdateEmailDocument = gql`
+    mutation updateEmail($email: String!) {
+  updateEmail(email: $email)
+}
+    `;
+
+export function useUpdateEmailMutation() {
+  return Urql.useMutation<UpdateEmailMutation, UpdateEmailMutationVariables>(UpdateEmailDocument);
+};
+export const UpdatePasswordDocument = gql`
+    mutation updatePassword($pass: String!) {
+  updatePassword(pass: $pass)
+}
+    `;
+
+export function useUpdatePasswordMutation() {
+  return Urql.useMutation<UpdatePasswordMutation, UpdatePasswordMutationVariables>(UpdatePasswordDocument);
 };
 export const ExamRecordFromIdDocument = gql`
     query ExamRecordFromId($id: String!) {
@@ -696,6 +804,7 @@ export const RegisteredExamsDocument = gql`
   registeredExams {
     id
     exam {
+      id
       date
       subject {
         espp

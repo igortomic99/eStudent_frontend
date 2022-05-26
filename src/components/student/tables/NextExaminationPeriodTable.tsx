@@ -9,6 +9,7 @@ import {
 export const NextExaminationPeriodTable = () => {
   const router = useRouter();
   const [{ data, error, fetching }] = useExamsFromExaminationPeriodQuery();
+  console.log(data);
   const [, registerExam] = useRegisterExamMutation();
   const [{ data: student }] = useMeQuery();
   let buttonDisplay = true;
@@ -67,24 +68,25 @@ export const NextExaminationPeriodTable = () => {
                         data?.examsFromExaminationPeriod.exams.map((e) => {
                           if (student?.me) {
                             if (
-                              e.examRecord?.singed &&
-                              e.examRecord.studentID?.includes(
+                              e.examRecord?.singed  &&
+                              e.examRecord?.studentID?.includes(
                                 student?.me.id as any
                               )
                             ) {
                               buttonDisplay = false;
                             }
+
                           }
                           return (
-                            <tr>
-                              <td className="px-6 py-4 whitespace-nowrap">
+                            <tr className="px-8 py-4 whitespace-nowrap text-sm text-gray-500">
+                              <td className="px-8 py-4 whitespace-nowrap text-sm text-gray-500">
                                 <div className="flex items-center">
                                   {e.subject.subjectName}
                                 </div>
                               </td>
                               <td className="px-8 py-4 whitespace-nowrap">
                                 <div className="text-sm text-gray-900">
-                                  {e.subject.type}
+                                  {e.subject.type === "REQUIRED" ? "OBAVEZNI" : "IZBORNI"}
                                 </div>
                               </td>
                               <td className="px-8 py-4 whitespace-nowrap text-sm text-gray-500">
@@ -102,9 +104,13 @@ export const NextExaminationPeriodTable = () => {
                                   <button
                                     className="bg-gray-500 rounded-lg p-2"
                                     onClick={async () => {
+                                      try{
                                       await registerExam({
                                         examID: e.id as any,
                                       });
+                                    }finally{
+                                      window.location.reload()
+                                    }
                                     }}
                                   >
                                     Пријави испит
@@ -150,7 +156,7 @@ export const NextExaminationPeriodTable = () => {
           </div>
         </>
       ) : (
-        <h1 className="text-center text-xl font-bold text-gray-600 mt-4">
+        <h1 className="text-center text-xl font-bold text-gray-600 mt-6">
           Тренутно нема испитних рокова или сте све ипите већ пријавили или
           положили
         </h1>

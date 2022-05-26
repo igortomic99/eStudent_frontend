@@ -23,6 +23,7 @@ export const createUrqlClient = (ssrExchange: any, ctx: any) => {
             cookie,
           }
         : undefined,
+        
     },
     exchanges: [
       cacheExchange({

@@ -1,11 +1,10 @@
 import { withUrqlClient } from "next-urql";
 import { useRouter } from "next/router";
 import React from "react";
-import { NavigationBar } from "../../components/student/NavigationBar";
 import { useExamsFromCurrentExamPeriodQuery } from "../../generated/graphql";
 import { createUrqlClient } from "../../utils/createUrqlClient";
 import NextLink from 'next/link'
-import { ProfessorNavigationBar } from "../../components/professor/ProfessorNavigationBar";
+import { ProfessorNavigationBar } from "../../components/professor/NavigationBar";
 
 const RegisteredExams = ({}) => {
   const [{ data, error, fetching }] = useExamsFromCurrentExamPeriodQuery();
@@ -45,12 +44,12 @@ const RegisteredExams = ({}) => {
                       >
                         Датум полагања
                       </th>
-                      <th
+                      {/* <th
                         scope="col"
                         className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                       >
                         student
-                      </th>
+                      </th> */}
                       <th
                         scope="col"
                         className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
@@ -78,7 +77,7 @@ const RegisteredExams = ({}) => {
                             <td className="px-10 py-4 whitespace-nowrap text-sm text-gray-500">
                               {e.date.split("T")[0]}
                             </td>
-                            {e.examRecord?.student ? (
+                            {/* {e.examRecord?.student ? (
                               <td className="px-8 py-4 whitespace-nowrap text-sm text-gray-500">
                                 {e.examRecord?.student?.firstName}{" "}
                                 {e.examRecord?.student?.lastName}
@@ -87,9 +86,9 @@ const RegisteredExams = ({}) => {
                               <td className="px-8 py-4 whitespace-nowrap text-sm text-gray-500">
                                 Niko nije prijavio ispit
                               </td>
-                            )}
+                            )} */}
                             <td className="px-8 py-4 whitespace-nowrap text-sm text-white">
-                             <NextLink href="/professor_panel/students_who_singed_exam/[id]" as={`/professor_panel/students_who_singed_exam/${e.subject.id}`}>
+                             <NextLink href="/professor/students_who_singed_exam/[id]" as={`/professor/students_who_singed_exam/${e.subject.id}`}>
                               <button
                                 className="bg-gray-500 rounded-lg p-2"
                                 onClick={async () => {

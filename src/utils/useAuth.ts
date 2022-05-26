@@ -7,7 +7,7 @@ export const useAuth = () => {
   const router = useRouter();
   useEffect(() => {
     if (!data?.me) {
-      router.push("/login");
+      router.replace("/student/please_login");
     }
   }, [fetching, data, router]);
 };

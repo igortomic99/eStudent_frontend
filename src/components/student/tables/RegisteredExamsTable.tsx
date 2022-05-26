@@ -1,10 +1,15 @@
 import { useRouter } from "next/router";
 import React from "react";
-import { useRegisteredExamsQuery } from "../../../generated/graphql";
+import {
+  useDeregisterMutation,
+  useRegisteredExamsQuery,
+} from "../../../generated/graphql";
 
 export const RegisteredExamsTable = () => {
   const router = useRouter();
   const [{ data, error, fetching }] = useRegisteredExamsQuery();
+  const [, deregister] = useDeregisterMutation();
+
   return (
     <>
       {data ? (
@@ -79,7 +84,15 @@ export const RegisteredExamsTable = () => {
                             <td className="px-8 py-4 whitespace-nowrap text-sm text-white">
                               <button
                                 className="bg-gray-500 rounded-lg p-2"
-                                onClick={async () => {}}
+                                onClick={async () => {
+                                  try {
+                                    const result = await deregister({
+                                      examID: e.exam.id,
+                                    });
+                                  } finally {
+                                    window.location.reload();
+                                  }
+                                }}
                               >
                                 Одјави испит
                               </button>
@@ -123,7 +136,7 @@ export const RegisteredExamsTable = () => {
           <a
             className="cursor-pointer text-cyan-600"
             onClick={() => {
-              router.push("/next_examination_period");
+              router.push("/student/next_examination_period");
             }}
           >
             овде.

@@ -1,7 +1,7 @@
 import { withUrqlClient } from "next-urql";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
-import { ProfessorNavigationBar } from "../../../components/professor/ProfessorNavigationBar";
+import { ProfessorNavigationBar } from "../../../components/professor/NavigationBar";
 import {
   useExamRecordFromIdQuery,
   useRegisterExamMutation,
@@ -43,6 +43,9 @@ const RegisterPassedExam = () => {
         </div>
       </div>
     );
+    setInterval(()=>{
+      router.push('/professor/registered_exams')
+    },2000)
   } else if (result?.error) {
     body = (
       <div className="alert flex flex-row items-center bg-red-200 p-5 rounded border-b-2 border-red-300">

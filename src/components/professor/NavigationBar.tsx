@@ -1,25 +1,29 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React, { useState } from "react";
-import { useLogoutMutation, useMeQuery } from "../../generated/graphql";
+import React, { useEffect, useState } from "react";
+import {
+  useMeQuery,
+  useLogoutMutation,
+  useMeProfessorQuery,
+} from "../../generated/graphql";
 import grbUniverziteta from "../../public/grbuniverziteta.png";
+import { isProfessor } from "../../utils/isProfessor";
 
-export const NavigationBar = () => {
+export const ProfessorNavigationBar = ({}) => {
   const [down, setDown] = useState(false);
   const [downMobile, setDownMobile] = useState(false);
   const [ispitiMenu, setIspitiMenu] = useState(false);
-  const [{ data, error, fetching }] = useMeQuery();
+  const [{ data, error, fetching }] = useMeProfessorQuery();
   const [, logout] = useLogoutMutation();
   const router = useRouter();
-  
+  console.log(data?.meProfessor);
   let body = null;
-  
-  if (data?.me) {
+  if (data?.meProfessor) {
     body = (
       <>
         <p className="text-white text-md hidden sm:block">
-          {data.me.firstName} {data.me.lastName}
+          {data.meProfessor.firstName} {data.meProfessor.lastName}
         </p>
         <div className="ml-3 relative">
           <div>
@@ -53,9 +57,6 @@ export const NavigationBar = () => {
                 className="block px-4 py-2 text-sm text-gray-700"
                 role="menuitem"
                 id="user-menu-item-0"
-                onClick={()=>{
-                  router.push("/student/profile");
-                }}
               >
                 Профил
               </a>
@@ -65,7 +66,7 @@ export const NavigationBar = () => {
                 role="menuitem"
                 id="user-menu-item-1"
                 onClick={() => {
-                  router.push("/student/settings");
+                  router.push("/professor/settings");
                 }}
               >
                 Подешавања
@@ -76,9 +77,9 @@ export const NavigationBar = () => {
                 role="menuitem"
                 id="user-menu-item-2"
                 onClick={async () => {
-                  const result  = await logout();
-                  if(result){
-                    router.replace('/student/login')
+                  const result = await logout();
+                  if (result) {
+                    router.replace("/professor/login");
                   }
                 }}
               >
@@ -90,7 +91,6 @@ export const NavigationBar = () => {
       </>
     );
   }
-  
   return (
     <nav className="bg-gray-800">
       <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
@@ -105,7 +105,7 @@ export const NavigationBar = () => {
                 setDownMobile(!downMobile);
               }}
             >
-              <span className="sr-only">Отвори главни мени</span>
+              <span className="sr-only">Open main menu</span>
               <svg
                 className="block h-6 w-6"
                 xmlns="http://www.w3.org/2000/svg"
@@ -115,9 +115,9 @@ export const NavigationBar = () => {
                 aria-hidden="true"
               >
                 <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
                   d="M4 6h16M4 12h16M4 18h16"
                 />
               </svg>
@@ -130,9 +130,9 @@ export const NavigationBar = () => {
                 aria-hidden="true"
               >
                 <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
                   d="M6 18L18 6M6 6l12 12"
                 />
               </svg>
@@ -142,7 +142,7 @@ export const NavigationBar = () => {
             <div
               className="flex-shrink-0 flex items-center"
               onClick={() => {
-                router.push("/");
+                router.push("/professor");
               }}
             >
               <div className="flex cursor-pointer">
@@ -169,64 +169,71 @@ export const NavigationBar = () => {
                   Испити
                 </a>
                 {ispitiMenu ? (
-                  <div className="flex absolute rounded shadow w-44 bg-white mt-11">
+                  <div className="flex absolute rounded shadow w-44 dark:bg-gray-700 mt-11">
                     <ul className="py-1" aria-labelledby="dropdownButton">
                       <li>
-                        <Link href={"/student/registered_exams"}>
-                          <a
-                            className="block px-4 py-2 text-sm text-gray-700 cursor-pointer"
-                            role="menuitem"
-                            id="user-menu-item-1"
-                          >
-                            Пријављени испити
-                          </a>
-                        </Link>
+                        <a
+                          onClick={() => {
+                            router.push("/professor/registered_exams");
+                          }}
+                          className="block px-4 py-2 text-sm text-white cursor-pointer"
+                          role="menuitem"
+                          id="user-menu-item-1"
+                        >
+                          Ispiti iz tekuceg roka
+                        </a>
                       </li>
                       <li>
-                        <Link href="/student/passed_exams" replace={true}>
-                          <a
-                            className="block px-4 py-2 text-sm text-gray-700 cursor-pointer"
-                            role="menuitem"
-                            id="user-menu-item-1"
-                          >
-                            Положени испити
-                          </a>
-                        </Link>
+                        <a
+                          onClick={() => {
+                            router.push("/passed_exams");
+                          }}
+                          className="block px-4 py-2 text-sm text-white cursor-pointer"
+                          role="menuitem"
+                          id="user-menu-item-1"
+                        >
+                          Положени испити
+                        </a>
                       </li>
                       <li>
-                        <Link href="/student/next_examination_period" replace={true}>
-                          <a
-                            className="block px-4 py-2 text-sm text-gray-700 cursor-pointer"
-                            role="menuitem"
-                            id="user-menu-item-1"
-                          >
-                            Пријава испита
-                          </a>
-                        </Link>
+                        <a
+                          onClick={() => {
+                            router.push("/next_examination_period");
+                          }}
+                          className="block px-4 py-2 text-sm text-white cursor-pointer"
+                          role="menuitem"
+                          id="user-menu-item-1"
+                        >
+                          Пријава испита
+                        </a>
                       </li>
                     </ul>
                   </div>
                 ) : null}
-                <Link href="/student/subjects" replace={true}>
-                  <a className="text-gray-300 cursor-pointer hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
-                    Предмети
+                <a
+                  onClick={() => {
+                    router.push("/subjects");
+                  }}
+                  className="text-gray-300 cursor-pointer hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                >
+                  Предмети
+                </a>
+
+                <Link href="/professor" replace={true}>
+                  <a
+                    href="#"
+                    className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                  >
+                    Насловна
                   </a>
                 </Link>
-                <Link href="/student" replace={true}>
-                <a
-                  href="#"
-                  className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
-                >
-                  Насловна
-                </a>
-                </Link>
                 <Link href="http://www.uo.mod.gov.rs/" replace={true}>
-                <a
-                  href="http://www.uo.mod.gov.rs/"
-                  className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
-                >
-                  Универзитет
-                </a>
+                  <a
+                    href="http://www.uo.mod.gov.rs/"
+                    className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                  >
+                    Универзитет
+                  </a>
                 </Link>
               </div>
             </div>

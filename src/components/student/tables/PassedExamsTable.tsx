@@ -19,7 +19,7 @@ export const PassedExamsTable = () => {
   return (
     <>
       {data?.passedExams.length !== 0 ? (
-        <div className="flex flex-col mt-10 px-20">
+        <div className="flex flex-col mt-16 px-20">
           <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
             <div className="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
               <div className="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
@@ -79,15 +79,15 @@ export const PassedExamsTable = () => {
                   <tbody className="bg-white divide-y divide-gray-200">
                     {data?.passedExams.map((e) => {
                       return (
-                        <tr>
-                          <td className="px-6 py-4 whitespace-nowrap">
+                        <tr className="px-8 py-4 whitespace-nowrap text-sm text-gray-500">
+                          <td className="px-8 py-4 whitespace-nowrap text-sm text-gray-500">
                             <div className="flex items-center">
                               {e.exam.subject.subjectName}
                             </div>
                           </td>
                           <td className="px-8 py-4 whitespace-nowrap">
                             <div className="text-sm text-gray-900">
-                              {e.exam.subject.type}
+                              {e.exam.subject.type === "REQUIRED" ? "OBAVEZNI" : "IZBORNI"}
                             </div>
                           </td>
                           <td className="px-8 py-4 whitespace-nowrap text-sm text-gray-500">
