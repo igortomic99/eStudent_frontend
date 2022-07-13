@@ -17,7 +17,7 @@ export const ProfessorNavigationBar = ({}) => {
   const [{ data, error, fetching }] = useMeProfessorQuery();
   const [, logout] = useLogoutMutation();
   const router = useRouter();
-  console.log(data?.meProfessor);
+  
   let body = null;
   if (data?.meProfessor) {
     body = (
@@ -79,7 +79,7 @@ export const ProfessorNavigationBar = ({}) => {
                 onClick={async () => {
                   const result = await logout();
                   if (result) {
-                    router.replace("/professor/login");
+                    router.replace("/student/login");
                   }
                 }}
               >
@@ -92,7 +92,7 @@ export const ProfessorNavigationBar = ({}) => {
     );
   }
   return (
-    <nav className="bg-gray-800">
+    <nav className="bg-gray-800 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
         <div className="relative flex items-center justify-between h-16">
           <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
@@ -169,42 +169,30 @@ export const ProfessorNavigationBar = ({}) => {
                   Испити
                 </a>
                 {ispitiMenu ? (
-                  <div className="flex absolute rounded shadow w-44 dark:bg-gray-700 mt-11">
+                  <div className="flex absolute rounded shadow w-44 bg-white  mt-11">
                     <ul className="py-1" aria-labelledby="dropdownButton">
                       <li>
                         <a
                           onClick={() => {
                             router.push("/professor/registered_exams");
                           }}
-                          className="block px-4 py-2 text-sm text-white cursor-pointer"
+                          className="block px-4 py-2 text-sm  cursor-pointer"
                           role="menuitem"
                           id="user-menu-item-1"
                         >
-                          Ispiti iz tekuceg roka
+                          Испити из текућег рока
                         </a>
                       </li>
                       <li>
                         <a
                           onClick={() => {
-                            router.push("/passed_exams");
+                            router.push("/professor/create");
                           }}
-                          className="block px-4 py-2 text-sm text-white cursor-pointer"
+                          className="block px-4 py-2 text-sm  cursor-pointer"
                           role="menuitem"
                           id="user-menu-item-1"
                         >
-                          Положени испити
-                        </a>
-                      </li>
-                      <li>
-                        <a
-                          onClick={() => {
-                            router.push("/next_examination_period");
-                          }}
-                          className="block px-4 py-2 text-sm text-white cursor-pointer"
-                          role="menuitem"
-                          id="user-menu-item-1"
-                        >
-                          Пријава испита
+                          Креирај испит
                         </a>
                       </li>
                     </ul>
@@ -212,7 +200,7 @@ export const ProfessorNavigationBar = ({}) => {
                 ) : null}
                 <a
                   onClick={() => {
-                    router.push("/subjects");
+                    router.push("/professor/subjects");
                   }}
                   className="text-gray-300 cursor-pointer hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
                 >

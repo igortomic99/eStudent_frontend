@@ -3,11 +3,9 @@ import { CardBasic } from "../../components/CardBasic";
 import { CardExams } from "../../components/CardExams";
 import { NavigationBar } from "../../components/student/NavigationBar";
 import { useMeQuery, useAverageGradeQuery, useEspbQuery } from "../../generated/graphql";
-import { createUrqlClient } from "../../utils/createUrqlClient";
-import { useAuth } from "../../utils/useAuth";
+import { createUrqlClient } from "../../utils/createUrqlClient"
 
 const Profile = () =>{
-    useAuth();
     const [{ data }] = useMeQuery();
     const [{data:avg}] = useAverageGradeQuery();
     const [{data:espp}] = useEspbQuery();

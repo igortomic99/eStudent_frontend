@@ -3,10 +3,10 @@ import React from "react";
 import { NavigationBar } from "../../components/student/NavigationBar";
 import { NextExaminationPeriodTable } from "../../components/student/tables/NextExaminationPeriodTable";
 import { createUrqlClient } from "../../utils/createUrqlClient";
-import { useAuth } from "../../utils/useAuth";
+
 
 const NextExaminationPeriod = ({}) => {
-  useAuth();
+
   return (
     <>
       <NavigationBar />

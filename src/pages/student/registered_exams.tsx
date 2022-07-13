@@ -4,11 +4,10 @@ import React from "react";
 import { NavigationBar } from "../../components/student/NavigationBar";
 import { RegisteredExamsTable } from "../../components/student/tables/RegisteredExamsTable";
 import { createUrqlClient } from "../../utils/createUrqlClient";
-import { useAuth } from "../../utils/useAuth";
 
 
 const RegisteredExams = ({}) => {
-  useAuth();
+
   const router = useRouter();
   return (
     <>

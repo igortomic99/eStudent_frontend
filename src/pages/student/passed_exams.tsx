@@ -3,10 +3,9 @@ import React from "react";
 import { NavigationBar } from "../../components/student/NavigationBar";
 import { PassedExamsTable } from "../../components/student/tables/PassedExamsTable";
 import { createUrqlClient } from "../../utils/createUrqlClient";
-import { useAuth } from "../../utils/useAuth";
+
 
 const passedExams = () => {
-  useAuth();
   return (
     <div>
       <NavigationBar />

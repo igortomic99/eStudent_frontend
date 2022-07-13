@@ -110,6 +110,7 @@ export type Mutation = {
   createExaminationPeriod: ExaminationPeriod;
   createGrade: Grade;
   createModul: Modul;
+  createPost: Post;
   createProfessor: Professor;
   createStudent: Student;
   createSubject: Subject;
@@ -146,6 +147,11 @@ export type MutationCreateGradeArgs = {
 
 export type MutationCreateModulArgs = {
   input: ModulInput;
+};
+
+
+export type MutationCreatePostArgs = {
+  input: PostInput;
 };
 
 
@@ -201,6 +207,22 @@ export type MutationUpdatePasswordArgs = {
   pass: Scalars['String'];
 };
 
+export type Post = {
+  __typename?: 'Post';
+  creationDate: Scalars['DateTime'];
+  creator: Professor;
+  creatorID?: Maybe<Scalars['String']>;
+  id: Scalars['String'];
+  important?: Maybe<Scalars['Boolean']>;
+  text?: Maybe<Scalars['String']>;
+};
+
+export type PostInput = {
+  creationDate: Scalars['DateTime'];
+  important?: InputMaybe<Scalars['Boolean']>;
+  text?: InputMaybe<Scalars['String']>;
+};
+
 export type Professor = {
   __typename?: 'Professor';
   email: Scalars['String'];
@@ -224,21 +246,26 @@ export type Query = {
   __typename?: 'Query';
   ExamRecordFromId: ExamRecord;
   averageGrade: Scalars['Float'];
+  currentExPeriod: ExaminationPeriod;
   examsFromCurrentExamPeriod: Array<Exam>;
   examsFromExaminationPeriod: ExaminationPeriod;
   getAllEXP: Array<ExaminationPeriod>;
   getAllExams: Array<ExamRecord>;
   getAllModuls: Array<Modul>;
+  getAllPosts: Array<Post>;
   getAllProfessors: Array<Professor>;
   getClasses: Array<Class>;
   getGrades: Array<Grade>;
+  getImportant: Array<Post>;
   getStudents: Array<Student>;
+  getSubject: Subject;
   getSubjects: Array<Subject>;
   isActive: Scalars['Boolean'];
   me: Student;
   meProfessor: Professor;
   modulSubjects: Array<Subject>;
   passedExams: Array<ExamRecord>;
+  professorExams: Array<Exam>;
   registeredExams: Array<ExamRecord>;
   studentsForModul: Array<Student>;
   studentsSubjects: Array<Subject>;
@@ -249,6 +276,11 @@ export type Query = {
 
 
 export type QueryExamRecordFromIdArgs = {
+  id: Scalars['String'];
+};
+
+
+export type QueryGetSubjectArgs = {
   id: Scalars['String'];
 };
 
@@ -368,6 +400,13 @@ export type CreatSubjectMutationVariables = Exact<{
 
 export type CreatSubjectMutation = { __typename?: 'Mutation', createSubject: { __typename?: 'Subject', id: string, subjectName: string, espp: number } };
 
+export type CreatePostMutationVariables = Exact<{
+  input: PostInput;
+}>;
+
+
+export type CreatePostMutation = { __typename?: 'Mutation', createPost: { __typename?: 'Post', id: string, creationDate: any, creatorID?: string | null | undefined, text?: string | null | undefined, important?: boolean | null | undefined } };
+
 export type LoginMutationVariables = Exact<{
   brind: Scalars['String'];
   password: Scalars['String'];
@@ -380,6 +419,13 @@ export type LogoutMutationVariables = Exact<{ [key: string]: never; }>;
 
 
 export type LogoutMutation = { __typename?: 'Mutation', logout: boolean };
+
+export type AddExamMutationVariables = Exact<{
+  input: ExamInput;
+}>;
+
+
+export type AddExamMutation = { __typename?: 'Mutation', addExam: { __typename?: 'Exam', id: string, date: any } };
 
 export type LoginProfessorMutationVariables = Exact<{
   password: Scalars['String'];
@@ -425,6 +471,16 @@ export type UpdatePasswordMutationVariables = Exact<{
 
 export type UpdatePasswordMutation = { __typename?: 'Mutation', updatePassword: boolean };
 
+export type GetAllPostsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetAllPostsQuery = { __typename?: 'Query', getAllPosts: Array<{ __typename?: 'Post', id: string, creationDate: any, creatorID?: string | null | undefined, text?: string | null | undefined, creator: { __typename?: 'Professor', firstName: string, lastName: string } }> };
+
+export type ImportantQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type ImportantQuery = { __typename?: 'Query', getImportant: Array<{ __typename?: 'Post', id: string, creationDate: any, creatorID?: string | null | undefined, text?: string | null | undefined, important?: boolean | null | undefined, creator: { __typename?: 'Professor', id: string, firstName: string, lastName: string } }> };
+
 export type ExamRecordFromIdQueryVariables = Exact<{
   id: Scalars['String'];
 }>;
@@ -437,10 +493,27 @@ export type ExamsFromCurrentExamPeriodQueryVariables = Exact<{ [key: string]: ne
 
 export type ExamsFromCurrentExamPeriodQuery = { __typename?: 'Query', examsFromCurrentExamPeriod: Array<{ __typename?: 'Exam', date: any, subject: { __typename?: 'Subject', id: string, subjectName: string, espp: number, type: SubjectType }, examRecord?: { __typename?: 'ExamRecord', student?: { __typename?: 'Student', firstName: string, lastName: string, brind: string } | null | undefined } | null | undefined }> };
 
+export type CurrentExPeriodQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type CurrentExPeriodQuery = { __typename?: 'Query', currentExPeriod: { __typename?: 'ExaminationPeriod', id: string, name: string, beginningDate: any, endDate: any, modulID?: string | null | undefined, active?: boolean | null | undefined, exams: Array<{ __typename?: 'Exam', subject: { __typename?: 'Subject', subjectName: string } }> } };
+
+export type GetSubjectQueryVariables = Exact<{
+  id: Scalars['String'];
+}>;
+
+
+export type GetSubjectQuery = { __typename?: 'Query', getSubject: { __typename?: 'Subject', id: string, subjectName: string } };
+
 export type MeProfessorQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type MeProfessorQuery = { __typename?: 'Query', meProfessor: { __typename?: 'Professor', id: string, firstName: string, lastName: string, email: string, password: string, jmbg: string, role: Role } };
+
+export type MyExamsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type MyExamsQuery = { __typename?: 'Query', professorExams: Array<{ __typename?: 'Exam', id: string, date: any, subject: { __typename?: 'Subject', id: string, subjectName: string, type: SubjectType, espp: number } }> };
 
 export type StudentsWhoSingedExamQueryVariables = Exact<{
   subjectID: Scalars['String'];
@@ -534,6 +607,21 @@ export const CreatSubjectDocument = gql`
 export function useCreatSubjectMutation() {
   return Urql.useMutation<CreatSubjectMutation, CreatSubjectMutationVariables>(CreatSubjectDocument);
 };
+export const CreatePostDocument = gql`
+    mutation CreatePost($input: PostInput!) {
+  createPost(input: $input) {
+    id
+    creationDate
+    creatorID
+    text
+    important
+  }
+}
+    `;
+
+export function useCreatePostMutation() {
+  return Urql.useMutation<CreatePostMutation, CreatePostMutationVariables>(CreatePostDocument);
+};
 export const LoginDocument = gql`
     mutation Login($brind: String!, $password: String!) {
   login(brind: $brind, password: $password) {
@@ -553,6 +641,18 @@ export const LogoutDocument = gql`
 
 export function useLogoutMutation() {
   return Urql.useMutation<LogoutMutation, LogoutMutationVariables>(LogoutDocument);
+};
+export const AddExamDocument = gql`
+    mutation AddExam($input: ExamInput!) {
+  addExam(input: $input) {
+    id
+    date
+  }
+}
+    `;
+
+export function useAddExamMutation() {
+  return Urql.useMutation<AddExamMutation, AddExamMutationVariables>(AddExamDocument);
 };
 export const LoginProfessorDocument = gql`
     mutation LoginProfessor($password: String!, $email: String!) {
@@ -616,6 +716,44 @@ export const UpdatePasswordDocument = gql`
 export function useUpdatePasswordMutation() {
   return Urql.useMutation<UpdatePasswordMutation, UpdatePasswordMutationVariables>(UpdatePasswordDocument);
 };
+export const GetAllPostsDocument = gql`
+    query getAllPosts {
+  getAllPosts {
+    id
+    creationDate
+    creatorID
+    text
+    creator {
+      firstName
+      lastName
+    }
+  }
+}
+    `;
+
+export function useGetAllPostsQuery(options: Omit<Urql.UseQueryArgs<GetAllPostsQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<GetAllPostsQuery>({ query: GetAllPostsDocument, ...options });
+};
+export const ImportantDocument = gql`
+    query Important {
+  getImportant {
+    id
+    creationDate
+    creator {
+      id
+      firstName
+      lastName
+    }
+    creatorID
+    text
+    important
+  }
+}
+    `;
+
+export function useImportantQuery(options: Omit<Urql.UseQueryArgs<ImportantQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<ImportantQuery>({ query: ImportantDocument, ...options });
+};
 export const ExamRecordFromIdDocument = gql`
     query ExamRecordFromId($id: String!) {
   ExamRecordFromId(id: $id) {
@@ -661,6 +799,39 @@ export const ExamsFromCurrentExamPeriodDocument = gql`
 export function useExamsFromCurrentExamPeriodQuery(options: Omit<Urql.UseQueryArgs<ExamsFromCurrentExamPeriodQueryVariables>, 'query'> = {}) {
   return Urql.useQuery<ExamsFromCurrentExamPeriodQuery>({ query: ExamsFromCurrentExamPeriodDocument, ...options });
 };
+export const CurrentExPeriodDocument = gql`
+    query CurrentExPeriod {
+  currentExPeriod {
+    id
+    name
+    beginningDate
+    endDate
+    modulID
+    active
+    exams {
+      subject {
+        subjectName
+      }
+    }
+  }
+}
+    `;
+
+export function useCurrentExPeriodQuery(options: Omit<Urql.UseQueryArgs<CurrentExPeriodQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<CurrentExPeriodQuery>({ query: CurrentExPeriodDocument, ...options });
+};
+export const GetSubjectDocument = gql`
+    query getSubject($id: String!) {
+  getSubject(id: $id) {
+    id
+    subjectName
+  }
+}
+    `;
+
+export function useGetSubjectQuery(options: Omit<Urql.UseQueryArgs<GetSubjectQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<GetSubjectQuery>({ query: GetSubjectDocument, ...options });
+};
 export const MeProfessorDocument = gql`
     query MeProfessor {
   meProfessor {
@@ -677,6 +848,24 @@ export const MeProfessorDocument = gql`
 
 export function useMeProfessorQuery(options: Omit<Urql.UseQueryArgs<MeProfessorQueryVariables>, 'query'> = {}) {
   return Urql.useQuery<MeProfessorQuery>({ query: MeProfessorDocument, ...options });
+};
+export const MyExamsDocument = gql`
+    query MyExams {
+  professorExams {
+    id
+    date
+    subject {
+      id
+      subjectName
+      type
+      espp
+    }
+  }
+}
+    `;
+
+export function useMyExamsQuery(options: Omit<Urql.UseQueryArgs<MyExamsQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<MyExamsQuery>({ query: MyExamsDocument, ...options });
 };
 export const StudentsWhoSingedExamDocument = gql`
     query StudentsWhoSingedExam($subjectID: String!) {

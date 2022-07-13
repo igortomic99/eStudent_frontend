@@ -1,0 +1,12 @@
+query MyExams{
+  professorExams {
+    id
+    date
+    subject {
+      id
+      subjectName
+      type
+      espp
+    }
+  }
+}
